@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 $autoloadPath1 = __DIR__ . '/../../../autoload.php';
@@ -28,5 +29,23 @@ Options:
 DOC;
 
 $args = Docopt::handle($doc, array('version'=>'1.0'));
-foreach ($args as $k=>$v)
+/*foreach ($args as $k=>$v) {
     echo $k.': '.json_encode($v).PHP_EOL;
+}*/
+
+$f1Path = $args['<firstFile>'];
+$f2Path = $args['<secondFile>'];
+
+$f1handler = fopen($f1Path, 'r');
+$f2handler = fopen($f2Path, 'r');
+
+$f1datat = json_decode(fread($f1handler, filesize($f1Path)), true);
+$f2data = json_decode(fread($f2handler, filesize($f2Path)), true);
+$totalData = array_merge($f1datat, $f2data);
+ksort($totalData);
+//print_r($totalData);
+foreach ($totalData as $k=>$v) 
+    echo $k.': '.json_encode($v).PHP_EOL;
+
+fclose($f1handler);
+fclose($f2handler);
