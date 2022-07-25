@@ -39,13 +39,32 @@ $f2Path = $args['<secondFile>'];
 $f1handler = fopen($f1Path, 'r');
 $f2handler = fopen($f2Path, 'r');
 
-$f1datat = json_decode(fread($f1handler, filesize($f1Path)), true);
+$f1data = json_decode(fread($f1handler, filesize($f1Path)), true);
 $f2data = json_decode(fread($f2handler, filesize($f2Path)), true);
-$totalData = array_merge($f1datat, $f2data);
+$totalData = array_merge($f1data, $f2data);
 ksort($totalData);
 //print_r($totalData);
-foreach ($totalData as $k=>$v) 
-    echo $k.': '.json_encode($v).PHP_EOL;
+foreach ($totalData as $k => $v) {
+    $in1 = array_key_exists($k, $f1data);
+    $in2 = array_key_exists($k, $f2data);
+    if ($in1 && $in2) {
+        if ($f1data[$k] !== $f2data[$k]) {
+            echo "- " . $k.': ' . json_encode($f1data[$k]) . PHP_EOL;
+            echo "+ " . $k.': ' . json_encode($f2data[$k]) . PHP_EOL;
+        } else {
+            echo "  " . $k.': ' . json_encode($v) . PHP_EOL;
+        }
+    } elseif ($in1) {
+        echo "- " . $k.': ' . json_encode($v) . PHP_EOL;
+    } else {
+        echo "+ " . $k.': ' . json_encode($v) . PHP_EOL;
+    }
+    
+    
+    
+    //echo $k.': '.json_encode($v).PHP_EOL;
+    
+}
 
 fclose($f1handler);
 fclose($f2handler);
