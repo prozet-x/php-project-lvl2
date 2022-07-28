@@ -5,7 +5,7 @@
         "psr-4": {
             "Hexlet\\Code\\": "src/"
         },
-        "files" : ["./vendor/docopt/docopt/src/docopt.php"]
+        "files" : ["./vendor/docopt/docopt/src/docopt.php", "./src/gendiff.php"]
     },
     "authors": [
         {
@@ -15,5 +15,9 @@
     ],
     "require": {
         "docopt/docopt": "^1.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "phpunit/phpunit": "^9"
     }
 }
