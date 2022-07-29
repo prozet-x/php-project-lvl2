@@ -17,7 +17,8 @@ function makeDiff($pathToFile1, $pathToFile2)
         $in1 = array_key_exists($k, $f1data);
         $in2 = array_key_exists($k, $f2data);
         if ($in1 && $in2) {
-            $res .= ($f1data[$k] !== $f2data[$k] ? "  - "  : "  + ") . $k . ': ' . trim(json_encode($f2data[$k]), '"') . PHP_EOL;
+            $res .= $f1data[$k] !== $f2data[$k] ? "  - "  : "  + ";
+            $res .= $k . ': ' . trim(json_encode($f2data[$k]), '"') . PHP_EOL;
         } elseif ($in1) {
             $res .= "  - " . $k . ': ' . trim(json_encode($v), '"') . PHP_EOL;
         } else {
