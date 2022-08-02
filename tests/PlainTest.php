@@ -44,7 +44,7 @@ class PlainTest extends TestCase
                 . "  + timeout: 20" . PHP_EOL
                 . "  + verbose: true" . PHP_EOL
                 . "}" . PHP_EOL;
-        
+
         $expected33 = "{" . PHP_EOL
                 . "}" . PHP_EOL;
 
