@@ -9,7 +9,6 @@ function getFormattedString($changesSymbol, $key, $value)
 
 function makeDiff($f1data, $f2data)
 {
-    //echo ($f1data);
     $totalData = array_merge($f1data, $f2data);
     ksort($totalData);
 
@@ -35,31 +34,6 @@ function makeDiff($f1data, $f2data)
         "{" . PHP_EOL
     );
     return $res . "}" . PHP_EOL;
-
-    /*foreach ($totalData as $k => $v) {
-        $in1 = array_key_exists($k, $f1data);
-        $in2 = array_key_exists($k, $f2data);
-
-        if (!$in1) {
-            $res .= "  + " . $k . ': ' . trim(json_encode($v), '"') . PHP_EOL;
-            continue;
-        } elseif (!$in2) {
-            $res .= "  - " . $k . ': ' . trim(json_encode($v), '"') . PHP_EOL;
-            continue;
-        }
-        if ($f1data[$k] !== $f2data[$k]) {
-                $res .= "  - " . $k . ': ' . trim(json_encode($f1data[$k]), '"') . PHP_EOL;
-                $res .= "  + " . $k . ': ' . trim(json_encode($f2data[$k]), '"') . PHP_EOL;
-        } else {
-            $res .= "    " . $k . ': ' . trim(json_encode($v), '"') . PHP_EOL;
-        }
-    }
-
-    $res .= "}" . PHP_EOL;
-
-    //echo($res);
-
-    return $res;*/
 }
 
 function genDiff($pathToFile1, $pathToFile2)

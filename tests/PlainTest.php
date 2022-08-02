@@ -44,10 +44,14 @@ class PlainTest extends TestCase
                 . "  + timeout: 20" . PHP_EOL
                 . "  + verbose: true" . PHP_EOL
                 . "}" . PHP_EOL;
+        
+        $expected33 = "{" . PHP_EOL
+                . "}" . PHP_EOL;
 
         $this->assertEquals($expected12, genDiff($f1Path, $f2Path));
         $this->assertEquals($expected21, genDiff($f2Path, $f1Path));
         $this->assertEquals($expected13, genDiff($f1Path, $f3Path));
         $this->assertEquals($expected32, genDiff($f3Path, $f2Path));
+        $this->assertEquals($expected33, genDiff($f3Path, $f3Path));
     }
 }
