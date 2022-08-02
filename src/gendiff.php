@@ -2,7 +2,7 @@
 
 namespace Differ;
 
-function makeDiff($f1data,$f2data)
+function makeDiff($f1data, $f2data)
 {
     $totalData = array_merge($f1data, $f2data);
     ksort($totalData);
@@ -39,9 +39,9 @@ function genDiff($pathToFile1, $pathToFile2)
 
     $f1data = json_decode(fread($f1handler, filesize($pathToFile1)), true);
     $f2data = json_decode(fread($f2handler, filesize($pathToFile2)), true);
-    
+
     fclose($f1handler);
     fclose($f2handler);
-    
-    return makeDiff($f1data,$f2data);
+
+    return makeDiff($f1data, $f2data);
 }
