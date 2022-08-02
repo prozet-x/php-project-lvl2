@@ -1,1 +1,1 @@
-{"version":1,"defects":{"Hexlet\\Phpunit\\Tests\\PlainTest::testPlain":3},"times":{"Hexlet\\Phpunit\\Tests\\PlainTest::testPlain":0.002}}
+{"version":1,"defects":{"Hexlet\\Phpunit\\Tests\\PlainTest::testPlain":3,"Hexlet\\Phpunit\\Tests\\PlainTest::testYAMLPlain":4},"times":{"Hexlet\\Phpunit\\Tests\\PlainTest::testPlain":0.002,"Hexlet\\Phpunit\\Tests\\PlainTest::testJSONPlain":0.002,"Hexlet\\Phpunit\\Tests\\PlainTest::testYAMLPlain":0.001}}
