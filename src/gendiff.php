@@ -35,42 +35,7 @@ function makeDiff($pathToFile1, $pathToFile2)
     fclose($f1handler);
     fclose($f2handler);
 
-    echo($res);
+    //echo($res);
 
     return $res;
-}
-
-function genDiff()
-{
-    $doc = <<<DOC
-    Generate diff
-
-    Usage:
-      gendiff (-h|--help)
-      gendiff (-v|--version)
-      gendiff [--format <fmt>] <firstFile> <secondFile>
-
-    Options:
-      -h --help                     Show this screen
-      -v --version                  Show version
-      --format <fmt>                Report format [default: stylish]
-
-    DOC;
-
-    $args = \Docopt::handle($doc, array('version' => '1.0'));
-
-    $f1Path = $args['<firstFile>'];
-    $f2Path = $args['<secondFile>'];
-
-    if (!file_exists($f1Path)) {
-        echo("Error! File {$f1Path} is not exists." . PHP_EOL);
-        return false;
-    }
-
-    if (!file_exists($f2Path)) {
-        echo("Error! File {$f2Path} is not exists." . PHP_EOL);
-        return false;
-    }
-
-    return makeDiff($f1Path, $f2Path);
 }
