@@ -2,7 +2,7 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use function Differ\makeDiff;
+use function Differ\genDiff;
 
 $doc = <<<DOC
     Generate diff
@@ -34,4 +34,4 @@ if (!file_exists($f2Path)) {
     return false;
 }
 
-return makeDiff($f1Path, $f2Path);
+return genDiff($f1Path, $f2Path);

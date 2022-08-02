@@ -2,13 +2,8 @@
 
 namespace Differ;
 
-function makeDiff($pathToFile1, $pathToFile2)
+function makeDiff($f1data,$f2data)
 {
-    $f1handler = fopen($pathToFile1, 'r');
-    $f2handler = fopen($pathToFile2, 'r');
-
-    $f1data = json_decode(fread($f1handler, filesize($pathToFile1)), true);
-    $f2data = json_decode(fread($f2handler, filesize($pathToFile2)), true);
     $totalData = array_merge($f1data, $f2data);
     ksort($totalData);
 
@@ -32,10 +27,21 @@ function makeDiff($pathToFile1, $pathToFile2)
 
     $res .= "}" . PHP_EOL;
 
-    fclose($f1handler);
-    fclose($f2handler);
-
     //echo($res);
 
     return $res;
+}
+
+function genDiff($pathToFile1, $pathToFile2)
+{
+    $f1handler = fopen($pathToFile1, 'r');
+    $f2handler = fopen($pathToFile2, 'r');
+
+    $f1data = json_decode(fread($f1handler, filesize($pathToFile1)), true);
+    $f2data = json_decode(fread($f2handler, filesize($pathToFile2)), true);
+    
+    fclose($f1handler);
+    fclose($f2handler);
+    
+    return makeDiff($f1data,$f2data);
 }
