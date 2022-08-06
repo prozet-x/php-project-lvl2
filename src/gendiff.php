@@ -36,6 +36,18 @@ function makeDiff($f1data, $f2data)
     return $res . "}" . PHP_EOL;
 }
 
+function parseJSON($pathToFile)
+{
+    $handler = fopen($pathToFile, 'r');
+    return json_decode(fread($handler, filesize($pathToFile)), true);
+}
+
+function getParser($pathToFile)
+{
+    $extention = pathinfo($info->getFilename(), PATHINFO_EXTENSION);
+    if ()
+}
+
 function genDiff($pathToFile1, $pathToFile2)
 {
     $f1handler = fopen($pathToFile1, 'r');
