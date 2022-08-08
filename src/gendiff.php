@@ -2,6 +2,8 @@
 
 namespace Differ;
 
+use Symfony\Component\Yaml\Yaml;
+
 function getFormattedString($changesSymbol, $key, $value)
 {
     return "  " . $changesSymbol . " " . $key . ': ' . trim(json_encode($value), '"') . PHP_EOL;
@@ -39,25 +41,39 @@ function makeDiff($f1data, $f2data)
 function parseJSON($pathToFile)
 {
     $handler = fopen($pathToFile, 'r');
-    return json_decode(fread($handler, filesize($pathToFile)), true);
+    $res = json_decode(fread($handler, filesize($pathToFile)), true);
+    fclose($handler);
+    return $res;
+}
+
+function parseYAML($pathToFile)
+{
+    return Yaml::parseFile($pathToFile) ?? [];
 }
 
 function getParser($pathToFile)
 {
-    $extention = pathinfo($info->getFilename(), PATHINFO_EXTENSION);
-    if ()
+    $extension = strtolower(pathinfo($pathToFile, PATHINFO_EXTENSION));
+    if ($extension === 'json') {
+        return function ($pathToFile) {
+            return parseJSON($pathToFile);
+        };
+    } elseif ($extension === 'yml' || $extension === 'yaml') {
+        return function ($pathToFile) {
+            return parseYAML($pathToFile);
+        };
+    }
+}
+
+function getFileDataAsArray($pathToFile)
+{
+    $parser = getParser($pathToFile);
+    return $parser($pathToFile);
 }
 
 function genDiff($pathToFile1, $pathToFile2)
 {
-    $f1handler = fopen($pathToFile1, 'r');
-    $f2handler = fopen($pathToFile2, 'r');
-
-    $f1data = json_decode(fread($f1handler, filesize($pathToFile1)), true);
-    $f2data = json_decode(fread($f2handler, filesize($pathToFile2)), true);
-
-    fclose($f1handler);
-    fclose($f2handler);
-
+    $f1data = getFileDataAsArray($pathToFile1);
+    $f2data = getFileDataAsArray($pathToFile2);
     return makeDiff($f1data, $f2data);
 }
