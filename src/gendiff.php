@@ -2,7 +2,8 @@
 
 namespace Differ;
 
-use Symfony\Component\Yaml\Yaml;
+use function Differ\Parsers\parseJSON;
+use function Differ\Parsers\parseYAML;
 
 function getFormattedString($changesSymbol, $key, $value)
 {
@@ -36,19 +37,6 @@ function makeDiff($f1data, $f2data)
         "{" . PHP_EOL
     );
     return $res . "}" . PHP_EOL;
-}
-
-function parseJSON($pathToFile)
-{
-    $handler = fopen($pathToFile, 'r');
-    $res = json_decode(fread($handler, filesize($pathToFile)), true);
-    fclose($handler);
-    return $res;
-}
-
-function parseYAML($pathToFile)
-{
-    return Yaml::parseFile($pathToFile) ?? [];
 }
 
 function getParser($pathToFile)
