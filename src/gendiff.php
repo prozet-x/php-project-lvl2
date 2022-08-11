@@ -38,7 +38,7 @@ function makeDiff($f1data, $f2data)
     );
     return $res . "}" . PHP_EOL;*/
     
-    $res = array_reduce($keys,
+    return array_reduce($keys,
             function ($acc, $key) use ($before, $after){
                 $inBefore = array_key_exists($key, $before);
                 $inAfter = array_key_exists($key, $after);
@@ -49,16 +49,14 @@ function makeDiff($f1data, $f2data)
                     return [...$acc, ['key' => $key, 'value' => $before[$key], 'changes' => 'r']];
                 }
                 if (is_array($before[$key]) xor is_array($after[$key])) {
-                    return [
-                        ...$acc,
-                        ['key' => $key, 'value' => $before[$key], 'changes' => 'r'],
-                        ['key' => $key, 'value' => $after[$key], 'changes' => 'a']
-                    ];
+                    return [...$acc, ['key' => $key, 'value' => $after[$key], 'changes' => 'u', 'oldValue' => $before[$key]]];
                 }
                 if (!is_array($before[$key]) and !is_array($after[$key])) {
-                    
-                    
+                    return $before[$key] === $after[$key]
+                           ? [...$acc, ['key' => $key, 'value' => $after[$key], 'changes' => 'n']]
+                           : [...$acc, ['key' => $key, 'value' => $after[$key], 'changes' => 'u', 'oldValue' => $before[$key]]];
                 }
+                return [...$acc, ['key' => $key, 'value' => makeDiff($before[$key], $after[$key]), 'changes' => 'n']];
             },
             []);
 }
