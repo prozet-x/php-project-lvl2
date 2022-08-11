@@ -34,4 +34,6 @@ if (!file_exists($f2Path)) {
     return false;
 }
 
-return genDiff($f1Path, $f2Path);
+$diff = genDiff($f1Path, $f2Path);
+echo($diff);
+return $diff;
