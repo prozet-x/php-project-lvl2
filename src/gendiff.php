@@ -5,9 +5,9 @@ namespace Differ;
 use function Differ\Parsers\parseJSON;
 use function Differ\Parsers\parseYAML;
 
-function getFormattedString($changesSymbol, $key, $value)
+function getFormattedString($key, $value, $changesSymbol = ' ')
 {
-    return "  " . $changesSymbol . " " . $key . ': ' . trim(json_encode($value), '"') . PHP_EOL;
+    return "  $changesSymbol $key: " . trim(json_encode($value), '"') . PHP_EOL;
 }
 
 function makeDiff($f1data, $f2data)
@@ -23,16 +23,16 @@ function makeDiff($f1data, $f2data)
             $in1 = array_key_exists($key, $f1data);
             $in2 = array_key_exists($key, $f2data);
             if (!$in1) {
-                return $acc . getFormattedString("+", $key, $f2data[$key]);
+                return $acc . getFormattedString($key, $f2data[$key], "+");
             }
             if (!$in2) {
-                return $acc . getFormattedString("-", $key, $f1data[$key]);
+                return $acc . getFormattedString($key, $f1data[$key], "-");
             }
             if ($f1data[$key] !== $f2data[$key]) {
-                return $acc . getFormattedString("-", $key, $f1data[$key])
-                    . getFormattedString("+", $key, $f2data[$key]);
+                return $acc . getFormattedString($key, $f1data[$key], "-")
+                    . getFormattedString($key, $f2data[$key], "+");
             }
-            return $acc . getFormattedString(" ", $key, $f1data[$key]);
+            return $acc . getFormattedString($key, $f1data[$key]);
         },
         "{" . PHP_EOL
     );
