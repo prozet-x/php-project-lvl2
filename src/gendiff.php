@@ -17,7 +17,7 @@ function makeDiff($f1data, $f2data)
 
     $keys = array_unique(array_merge(array_keys($f1data), array_keys($f2data)));
     asort($keys);
-    $res = array_reduce(
+    /*$res = array_reduce(
         $keys,
         function ($acc, $key) use ($f1data, $f2data) {
             $in1 = array_key_exists($key, $f1data);
@@ -36,7 +36,31 @@ function makeDiff($f1data, $f2data)
         },
         "{" . PHP_EOL
     );
-    return $res . "}" . PHP_EOL;
+    return $res . "}" . PHP_EOL;*/
+    
+    $res = array_reduce($keys,
+            function ($acc, $key) use ($before, $after){
+                $inBefore = array_key_exists($key, $before);
+                $inAfter = array_key_exists($key, $after);
+                if (!$inBefore) {
+                    return [...$acc, ['key' => $key, 'value' => $after[$key], 'changes' => 'a']];
+                }
+                if (!$inAfter) {
+                    return [...$acc, ['key' => $key, 'value' => $before[$key], 'changes' => 'r']];
+                }
+                if (is_array($before[$key]) xor is_array($after[$key])) {
+                    return [
+                        ...$acc,
+                        ['key' => $key, 'value' => $before[$key], 'changes' => 'r'],
+                        ['key' => $key, 'value' => $after[$key], 'changes' => 'a']
+                    ];
+                }
+                if (!is_array($before[$key]) and !is_array($after[$key])) {
+                    
+                    
+                }
+            },
+            []);
 }
 
 function getParser($pathToFile)
