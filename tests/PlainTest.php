@@ -104,6 +104,24 @@ class PlainTest extends TestCase
 
         $this->makePlainTest($f1Path, $f2Path, $f3Path);
     }
+    
+    public function testJSONTree(): void
+    {
+        $f1Path = 'tests/fixtures/tree1.json';
+        $f2Path = 'tests/fixtures/tree2.json';
+        $f3Path = 'tests/fixtures/tree3.json';
+
+        $this->makeTreeTest($f1Path, $f2Path, $f3Path);
+    }
+
+    public function testYAMLTree(): void
+    {
+        $f1Path = 'tests/fixtures/tree1.yml';
+        $f2Path = 'tests/fixtures/tree2.yml';
+        $f3Path = 'tests/fixtures/tree3.yml';
+
+        $this->makePlainTest($f1Path, $f2Path, $f3Path);
+    }
 
     private function makePlainTest($f1Path, $f2Path, $f3Path)
     {
@@ -113,18 +131,9 @@ class PlainTest extends TestCase
         $this->assertEquals($this->expectedPlain32, genDiff($f3Path, $f2Path));
         $this->assertEquals($this->expectedPlain33, genDiff($f3Path, $f3Path));
     }
-    
-    /*public function testJSONTree(): void
-    {
-        $f1Path = 'tests/fixtures/tree1.json';
-        $f2Path = 'tests/fixtures/tree2.json';
 
-        $this->makeTreeTest($f1Path, $f2Path);
-    }
-    
-    private function makeTreeTest($f1Path, $f2Path)
+    private function makeTreeTest($f1Path, $f2Path, $f3Path)
     {
         $this->assertEquals($this->expectedTree12, genDiff($f1Path, $f2Path));
-        //$this->assertEquals($this->expectedTree21, genDiff($f2Path, $f1Path));
-    }*/
+    }
 }
