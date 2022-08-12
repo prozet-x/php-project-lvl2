@@ -5,17 +5,22 @@ namespace Differ;
 use function Differ\Parsers\parseJSON;
 use function Differ\Parsers\parseYAML;
 
-function getFormattedString($key, $value, $changesSymbol = ' ')
+function getFormattedValue($value)
 {
-    return "  $changesSymbol $key: " . trim(json_encode($value), '"') . PHP_EOL;
+    return trim(json_encode($value), '"');
 }
 
-function makeDiff($f1data, $f2data)
+function getFormattedString($key, $value, $changesSymbol = ' ')
 {
-    $totalData = array_merge($f1data, $f2data);
+    return "  $changesSymbol $key: " . getFormattedValue($value) . PHP_EOL;
+}
+
+function makeDiff($before, $after)
+{
+    $totalData = array_merge($before, $after);
     ksort($totalData);
 
-    $keys = array_unique(array_merge(array_keys($f1data), array_keys($f2data)));
+    $keys = array_unique(array_merge(array_keys($before), array_keys($after)));
     asort($keys);
     /*$res = array_reduce(
         $keys,
@@ -43,18 +48,18 @@ function makeDiff($f1data, $f2data)
                 $inBefore = array_key_exists($key, $before);
                 $inAfter = array_key_exists($key, $after);
                 if (!$inBefore) {
-                    return [...$acc, ['key' => $key, 'value' => $after[$key], 'changes' => 'a']];
+                    return [...$acc, ['key' => $key, 'value' => getFormattedValue($after[$key]), 'changes' => 'a']];
                 }
                 if (!$inAfter) {
-                    return [...$acc, ['key' => $key, 'value' => $before[$key], 'changes' => 'r']];
+                    return [...$acc, ['key' => $key, 'value' => getFormattedValue($before[$key]), 'changes' => 'r']];
                 }
                 if (is_array($before[$key]) xor is_array($after[$key])) {
-                    return [...$acc, ['key' => $key, 'value' => $after[$key], 'changes' => 'u', 'oldValue' => $before[$key]]];
+                    return [...$acc, ['key' => $key, 'value' => getFormattedValue($after[$key]), 'changes' => 'u', 'oldValue' => $before[$key]]];
                 }
                 if (!is_array($before[$key]) and !is_array($after[$key])) {
                     return $before[$key] === $after[$key]
-                           ? [...$acc, ['key' => $key, 'value' => $after[$key], 'changes' => 'n']]
-                           : [...$acc, ['key' => $key, 'value' => $after[$key], 'changes' => 'u', 'oldValue' => $before[$key]]];
+                           ? [...$acc, ['key' => $key, 'value' => getFormattedValue($after[$key]), 'changes' => 'n']]
+                           : [...$acc, ['key' => $key, 'value' => getFormattedValue($after[$key]), 'changes' => 'u', 'oldValue' => $before[$key]]];
                 }
                 return [...$acc, ['key' => $key, 'value' => makeDiff($before[$key], $after[$key]), 'changes' => 'n']];
             },
@@ -85,5 +90,7 @@ function genDiff($pathToFile1, $pathToFile2)
 {
     $f1data = getFileDataAsArray($pathToFile1);
     $f2data = getFileDataAsArray($pathToFile2);
-    return makeDiff($f1data, $f2data);
+    $res = makeDiff($f1data, $f2data);
+    print_r($res);
+    return $res;
 }
