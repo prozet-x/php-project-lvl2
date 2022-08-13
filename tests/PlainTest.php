@@ -105,7 +105,7 @@ class PlainTest extends TestCase
         $this->makePlainTest($f1Path, $f2Path, $f3Path);
     }
     
-    public function testJSONTree(): void
+    /*public function testJSONTree(): void
     {
         $f1Path = 'tests/fixtures/tree1.json';
         $f2Path = 'tests/fixtures/tree2.json';
@@ -121,7 +121,7 @@ class PlainTest extends TestCase
         $f3Path = 'tests/fixtures/tree3.yml';
 
         $this->makePlainTest($f1Path, $f2Path, $f3Path);
-    }
+    }*/
 
     private function makePlainTest($f1Path, $f2Path, $f3Path)
     {

@@ -4,15 +4,11 @@ namespace Differ;
 
 use function Differ\Parsers\parseJSON;
 use function Differ\Parsers\parseYAML;
+use function Differ\Formatters\formatStylish;
 
 function getFormattedValue($value)
 {
-    return trim(json_encode($value), '"');
-}
-
-function getFormattedString($key, $value, $changesSymbol = ' ')
-{
-    return "  $changesSymbol $key: " . getFormattedValue($value) . PHP_EOL;
+    return is_array($value) ? makeDiff($value, $value) : trim(json_encode($value), '"');
 }
 
 function makeDiff($before, $after)
@@ -92,5 +88,5 @@ function genDiff($pathToFile1, $pathToFile2)
     $f2data = getFileDataAsArray($pathToFile2);
     $res = makeDiff($f1data, $f2data);
     print_r($res);
-    return $res;
+    return formatStylish($res);
 }
