@@ -55,7 +55,7 @@ class PlainTest extends TestCase
             ."        }" . PHP_EOL
             ."        setting6: {" . PHP_EOL
             ."            doge: {" . PHP_EOL
-            ."              - wow:" . PHP_EOL
+            ."              - wow: " . PHP_EOL
             ."              + wow: so much" . PHP_EOL
             ."            }" . PHP_EOL
             ."            key: value" . PHP_EOL
@@ -105,7 +105,7 @@ class PlainTest extends TestCase
         $this->makePlainTest($f1Path, $f2Path, $f3Path);
     }
     
-    /*public function testJSONTree(): void
+    public function testJSONTree(): void
     {
         $f1Path = 'tests/fixtures/tree1.json';
         $f2Path = 'tests/fixtures/tree2.json';
@@ -114,7 +114,7 @@ class PlainTest extends TestCase
         $this->makeTreeTest($f1Path, $f2Path, $f3Path);
     }
 
-    public function testYAMLTree(): void
+    /*public function testYAMLTree(): void
     {
         $f1Path = 'tests/fixtures/tree1.yml';
         $f2Path = 'tests/fixtures/tree2.yml';
