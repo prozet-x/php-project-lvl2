@@ -14,32 +14,49 @@ function getFormattedValue($value)
 function makeDiff($before, $after)
 {
     $totalData = array_merge($before, $after);
-    ksort($totalData);
+    //ksort($totalData);
 
     $keys = array_unique(array_merge(array_keys($before), array_keys($after)));
-    asort($keys);
-    
-    return array_reduce($keys,
-            function ($acc, $key) use ($before, $after){
-                $inBefore = array_key_exists($key, $before);
-                $inAfter = array_key_exists($key, $after);
-                if (!$inBefore) {
-                    return [...$acc, ['key' => $key, 'changes' => 'a', 'value' => getFormattedValue($after[$key])]];
-                }
-                if (!$inAfter) {
-                    return [...$acc, ['key' => $key, 'changes' => 'r', 'value' => getFormattedValue($before[$key])]];
-                }
-                if (is_array($before[$key]) xor is_array($after[$key])) {
-                    return [...$acc, ['key' => $key, 'changes' => 'u', 'value' => getFormattedValue($after[$key]), 'oldValue' => getFormattedValue($before[$key])]];
-                }
-                if (!is_array($before[$key]) and !is_array($after[$key])) {
-                    return $before[$key] === $after[$key]
-                           ? [...$acc, ['key' => $key, 'changes' => 'n', 'value' => getFormattedValue($after[$key])]]
-                           : [...$acc, ['key' => $key, 'changes' => 'u', 'value' => getFormattedValue($after[$key]), 'oldValue' => getFormattedValue($before[$key])]];
-                }
-                return [...$acc, ['key' => $key, 'changes' => 'n', 'value' => makeDiff($before[$key], $after[$key])]];
-            },
-            []);
+
+    return array_reduce(
+        $keys,
+        function ($acc, $key) use ($before, $after) {
+            $inBefore = array_key_exists($key, $before);
+            $inAfter = array_key_exists($key, $after);
+            if (!$inBefore) {
+                return [...$acc, ['key' => $key, 'changes' => 'a', 'value' => getFormattedValue($after[$key])]];
+            }
+            if (!$inAfter) {
+                return [...$acc, ['key' => $key, 'changes' => 'r', 'value' => getFormattedValue($before[$key])]];
+            }
+            if (is_array($before[$key]) xor is_array($after[$key])) {
+                return [
+                            ...$acc,
+                            [
+                                'key' => $key,
+                                'changes' => 'u',
+                                'value' => getFormattedValue($after[$key]),
+                                'oldValue' => getFormattedValue($before[$key])
+                            ]
+                    ]   ;
+            }
+            if (!is_array($before[$key]) and !is_array($after[$key])) {
+                return $before[$key] === $after[$key]
+                       ? [...$acc, ['key' => $key, 'changes' => 'n', 'value' => getFormattedValue($after[$key])]]
+                       : [
+                            ...$acc,
+                           [
+                                'key' => $key,
+                                'changes' => 'u',
+                                'value' => getFormattedValue($after[$key]),
+                                'oldValue' => getFormattedValue($before[$key])
+                            ]
+                         ];
+            }
+            return [...$acc, ['key' => $key, 'changes' => 'n', 'value' => makeDiff($before[$key], $after[$key])]];
+        },
+        []
+    );
 }
 
 function getParser($pathToFile)
