@@ -13,6 +13,16 @@ function getFormattedValue($value)
 
 function getNewDiffElem($key, $changes, $value, ...$args)
 {
+    print_r('___________________' . PHP_EOL);
+    print_r($key);
+    print_r(PHP_EOL);
+    print_r($changes);
+    print_r(PHP_EOL);
+    print_r($value);
+    print_r(PHP_EOL);
+    print_r($args);
+    print_r(PHP_EOL);
+    print_r('___________________' . PHP_EOL);
     $res = ['key' => $key, 'changes' => $changes, 'value' => getFormattedValue($value)];
     return count($args) === 1
         ? [...$res, 'oldValue' => getFormattedValue($args[0])]
