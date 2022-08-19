@@ -2,8 +2,7 @@
 
 namespace Differ;
 
-use function Differ\Parsers\parseJSON;
-use function Differ\Parsers\parseYAML;
+use function Differ\Parsers\getParser;
 use function Differ\Formatters\formatStylish;
 
 function getFormattedValue($value)
@@ -38,32 +37,15 @@ function makeDiff($before, $after)
             if (!$inAfter) {
                 return [...$acc, $getNewDiffElemFunc($key, 'r', $before[$key])];
             }
-            if (is_array($before[$key]) xor is_array($after[$key])) {
-                return [...$acc, $getNewDiffElemFunc($key, 'u', $after[$key], $before[$key])];
+            if (is_array($before[$key]) and is_array($after[$key])) {
+                return [...$acc, ['key' => $key, 'changes' => 'n', 'value' => makeDiff($before[$key], $after[$key])]];
             }
-            if (!is_array($before[$key]) and !is_array($after[$key])) {
-                return $before[$key] === $after[$key]
+            return $before[$key] === $after[$key]
                        ? [...$acc, $getNewDiffElemFunc($key, 'n', $after[$key])]
                        : [...$acc, $getNewDiffElemFunc($key, 'u', $after[$key], $before[$key])];
-            }
-            return [...$acc, ['key' => $key, 'changes' => 'n', 'value' => makeDiff($before[$key], $after[$key])]];
         },
         []
     );
-}
-
-function getParser($pathToFile)
-{
-    $extension = strtolower(pathinfo($pathToFile, PATHINFO_EXTENSION));
-    if ($extension === 'json') {
-        return function ($pathToFile) {
-            return parseJSON($pathToFile);
-        };
-    } elseif ($extension === 'yml' || $extension === 'yaml') {
-        return function ($pathToFile) {
-            return parseYAML($pathToFile);
-        };
-    }
 }
 
 function getFileDataAsArray($pathToFile)
