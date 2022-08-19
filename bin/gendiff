@@ -36,19 +36,12 @@ $doc = <<<DOC
 
 $args = \Docopt::handle($doc, array('version' => '1.0'));
 
-$f1Path = $args['<firstFile>'];
-$f2Path = $args['<secondFile>'];
-
-if (!filesExists($f1Path)) {
-    echo("Error! File {$f1Path} is not exists." . PHP_EOL);
-    return false;
+try {
+    $diff = genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']);
+    echo($diff);
+    return $diff;
+} catch (Exception $ex) {
+    echo($ex ->getMessage());
 }
-
-if (!file_exists($f2Path)) {
-    echo("Error! File {$f2Path} is not exists." . PHP_EOL);
-    return false;
-}
-
-$diff = genDiff($f1Path, $f2Path);
-echo($diff);
-return $diff;
+./bin/gendiff ./tests/fixtures/tree1.json ./tests/fixtures/tree2.json
+./bin/gendiff ./tests/fixtures/tree1.yml ./tests/fixtures/tree2.yml

@@ -54,8 +54,26 @@ function getFileDataAsArray($pathToFile)
     return $parser($pathToFile);
 }
 
-function genDiff($pathToFile1, $pathToFile2)
+function checkfilesExisting(...$files)
 {
+    $badPaths = array_reduce(
+        $files,
+        function ($acc, $pathToFile) {
+            return file_exists($pathToFile) ? $acc : [...$acc, $pathToFile];
+        },
+        []
+    );
+    if (count($badPaths) > 0) {
+        $message = "Files are not found:" . PHP_EOL
+                . implode(PHP_EOL, $badPaths) . PHP_EOL
+                . "You should enter an existing files paths." . PHP_EOL;
+        throw new \Exception($message);
+    }
+}
+
+function genDiff($pathToFile1, $pathToFile2, $outputFormat = 'stylish')
+{
+    checkfilesExisting($pathToFile1, $pathToFile2);
     $f1data = getFileDataAsArray($pathToFile1);
     $f2data = getFileDataAsArray($pathToFile2);
     $res = makeDiff($f1data, $f2data);
