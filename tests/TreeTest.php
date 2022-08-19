@@ -53,7 +53,7 @@ class TreeTest extends TestCase
             . "    }" . PHP_EOL
             . "}" . PHP_EOL;
 
-     private $expectedTree13 = "{" . PHP_EOL
+    private $expectedTree13 = "{" . PHP_EOL
             . "  - common: {" . PHP_EOL
             . "        setting1: Value 1" . PHP_EOL
             . "        setting2: 200" . PHP_EOL
@@ -80,7 +80,7 @@ class TreeTest extends TestCase
             . "    }" . PHP_EOL
             . "}" . PHP_EOL;
 
-     private $expectedTree31 = "{" . PHP_EOL
+    private $expectedTree31 = "{" . PHP_EOL
             . "  + common: {" . PHP_EOL
             . "        setting1: Value 1" . PHP_EOL
             . "        setting2: 200" . PHP_EOL
@@ -107,6 +107,11 @@ class TreeTest extends TestCase
             . "    }" . PHP_EOL
             . "}" . PHP_EOL;
 
+    private $expectedBadFilesPaths = "Files are not found:" . PHP_EOL
+                . "tests/fixtures/badPath1.json" . PHP_EOL
+                . "tests/fixtures/badPath2.yml" . PHP_EOL
+                . "You should enter an existing files paths." . PHP_EOL;
+
     public function testJSONTree(): void
     {
         $f1Path = 'tests/fixtures/tree1.json';
@@ -130,5 +135,13 @@ class TreeTest extends TestCase
         $this->assertEquals($this->expectedTree12, genDiff($f1Path, $f2Path));
         $this->assertEquals($this->expectedTree13, genDiff($f1Path, $f3Path));
         $this->assertEquals($this->expectedTree31, genDiff($f3Path, $f1Path));
+    }
+
+    public function testBadFilePath(): void
+    {
+        $f1Path = 'tests/fixtures/badPath1.json';
+        $f2Path = 'tests/fixtures/badPath2.yml';
+        $this -> expectExceptionMessage($this -> expectedBadFilesPaths);
+        genDiff($f1Path, $f2Path);
     }
 }
