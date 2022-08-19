@@ -116,14 +116,14 @@ class TreeTest extends TestCase
         $this->makeTreeTest($f1Path, $f2Path, $f3Path);
     }
 
-    /*public function testYAMLTree(): void
+    public function testYAMLTree(): void
     {
         $f1Path = 'tests/fixtures/tree1.yml';
         $f2Path = 'tests/fixtures/tree2.yml';
         $f3Path = 'tests/fixtures/tree3.yml';
 
-        $this->makePlainTest($f1Path, $f2Path, $f3Path);
-    }*/
+        $this->makeTreeTest($f1Path, $f2Path, $f3Path);
+    }
 
     private function makeTreeTest($f1Path, $f2Path, $f3Path)
     {
