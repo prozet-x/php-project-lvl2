@@ -8,4 +8,4 @@
 ### Finding differences between YAML-files
 [![asciicast](https://asciinema.org/a/r9HYeT2j5IMFQGsBAyJYH3mJ1.svg)](https://asciinema.org/a/r9HYeT2j5IMFQGsBAyJYH3mJ1)
 ### Finding differences between files with recursive structure
-[![asciicast](https://asciinema.org/a/CiUzOiXYAXxCaM9aun2HJckhK.svg)](https://asciinema.org/a/CiUzOiXYAXxCaM9aun2HJckhK)
+[![asciicast](https://asciinema.org/a/KZUMacGADYSQhLbna71RKT7kL.svg)](https://asciinema.org/a/KZUMacGADYSQhLbna71RKT7kL)
