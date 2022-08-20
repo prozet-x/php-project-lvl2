@@ -4,21 +4,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use function Differ\genDiff;
 
-function filesExists(...$files)
-{
-    array_reduce(
-            $files,
-            function ($acc, $filePath) {
-                return file_exists($filePath)
-                    ? $acc
-                    : $acc. "File $filePath is not exists!";
-            },
-            ''
-    );
-    $exists = array_filter($files, fn ($pathToFile) => file_exists($pathToFile));
-    return count($exists) === count($files);
-}
-
 $doc = <<<DOC
     Generate diff
 
@@ -38,7 +23,7 @@ $args = \Docopt::handle($doc, array('version' => '1.0'));
 
 try {
     $diff = genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']);
-    echo($diff);
+    print_r($diff);
     return $diff;
 } catch (Exception $ex) {
     throw new \Exception($ex -> getMessage());
