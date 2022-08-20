@@ -147,7 +147,7 @@ class AllTest extends TestCase
 
         $this->assertEquals($expectedPlain12, genDiff($this -> yamlPath1, $this -> jsonPath2, 'plain'));
     }
-    
+
     public function testJSON(): void
     {
         $expectedJSON12 = '[{"key":"common","changes":"n","value":[{"key":"setting1","changes":"n","value":"Value 1"},{"key":"setting2","changes":"r","value":200},{"key":"setting3","changes":"u","value":null,"oldValue":true},{"key":"setting6","changes":"n","value":[{"key":"key","changes":"n","value":"value"},{"key":"doge","changes":"n","value":[{"key":"wow","changes":"u","value":"so much","oldValue":""}]},{"key":"ops","changes":"a","value":"vops"}]},{"key":"follow","changes":"a","value":false},{"key":"setting4","changes":"a","value":"blah blah"},{"key":"setting5","changes":"a","value":[{"key":"key5","changes":"n","value":"value5"}]}]},{"key":"group1","changes":"n","value":[{"key":"baz","changes":"u","value":"bars","oldValue":"bas"},{"key":"foo","changes":"n","value":"bar"},{"key":"nest","changes":"u","value":"str","oldValue":[{"key":"key","changes":"n","value":"value"}]}]},{"key":"group2","changes":"r","value":[{"key":"abc","changes":"n","value":12345},{"key":"deep","changes":"n","value":[{"key":"id","changes":"n","value":45}]}]},{"key":"group3","changes":"a","value":[{"key":"deep","changes":"n","value":[{"key":"id","changes":"n","value":[{"key":"number","changes":"n","value":45}]}]},{"key":"fee","changes":"n","value":100500}]}]' . PHP_EOL;
