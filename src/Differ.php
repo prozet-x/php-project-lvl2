@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ;
+namespace Differ\Differ;
 
 use function Differ\Parsers\getParser;
 use function Differ\Formatters\formatDiff;
