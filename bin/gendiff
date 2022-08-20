@@ -41,6 +41,5 @@ try {
     echo($diff);
     return $diff;
 } catch (Exception $ex) {
-    echo($ex -> getMessage());
     throw new \Exception($ex -> getMessage());
 }

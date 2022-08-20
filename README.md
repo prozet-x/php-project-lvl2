@@ -9,3 +9,5 @@
 [![asciicast](https://asciinema.org/a/r9HYeT2j5IMFQGsBAyJYH3mJ1.svg)](https://asciinema.org/a/r9HYeT2j5IMFQGsBAyJYH3mJ1)
 ### Finding differences between files with recursive structure
 [![asciicast](https://asciinema.org/a/KZUMacGADYSQhLbna71RKT7kL.svg)](https://asciinema.org/a/KZUMacGADYSQhLbna71RKT7kL)
+### Output in plain format
+[![asciicast](https://asciinema.org/a/sVHJosytJ1xAm4ezOggK2HL4u.svg)](https://asciinema.org/a/sVHJosytJ1xAm4ezOggK2HL4u)

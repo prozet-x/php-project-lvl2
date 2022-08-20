@@ -3,11 +3,12 @@
 namespace Differ;
 
 use function Differ\Parsers\getParser;
-use function Differ\Formatters\formatStylish;
+use function Differ\Formatters\formatDiff;
 
 function getFormattedValue($value)
 {
-    return is_array($value) ? makeDiff($value, $value) : trim(json_encode($value), '"');
+    //return is_array($value) ? makeDiff($value, $value) : trim(json_encode($value), '"');
+    return is_array($value) ? makeDiff($value, $value) : $value;
 }
 
 function getNewDiffElem($key, $changes, $value, ...$args)
@@ -66,7 +67,7 @@ function checkfilesExisting(...$files)
     if (count($badPaths) > 0) {
         $message = "Files are not found:" . PHP_EOL
                 . implode(PHP_EOL, $badPaths) . PHP_EOL
-                . "You should enter an existing files paths." . PHP_EOL;
+                . "You should enter an existing files paths.";
         throw new \Exception($message);
     }
 }
@@ -77,5 +78,5 @@ function genDiff($pathToFile1, $pathToFile2, $outputFormat = 'stylish')
     $f1data = getFileDataAsArray($pathToFile1);
     $f2data = getFileDataAsArray($pathToFile2);
     $res = makeDiff($f1data, $f2data);
-    return formatStylish($res);
+    return formatDiff($res, $outputFormat);
 }

@@ -1,14 +1,19 @@
 <?php
 
-namespace Differ\Formatters;
+namespace Differ\Formatters\Stylish;
 
 const TAB = '    ';
+
+function getformattedValue($value)
+{
+    return trim(json_encode($value), '"');
+}
 
 function getFormattedString($key, $value, $deep, $changesSymbol)
 {
     return is_array($value)
     ? "  $changesSymbol $key: " . formatStylish($value, $deep + 1)
-    : "  $changesSymbol $key: $value" . PHP_EOL;
+    : "  $changesSymbol $key: " . getformattedValue($value) . PHP_EOL;
 }
 
 function formatStylish($diff, $deep = 0)

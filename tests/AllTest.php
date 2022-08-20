@@ -1,14 +1,14 @@
 <?php
 
-namespace Hexlet\Phpunit\Tests;
+namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
 
 use function Differ\genDiff;
 
-class TreeTest extends TestCase
+class AllTest extends TestCase
 {
-    private $expectedTree12 = "{" . PHP_EOL
+    private $expectedStylish12 = "{" . PHP_EOL
             . "    common: {" . PHP_EOL
             . "      + follow: false" . PHP_EOL
             . "        setting1: Value 1" . PHP_EOL
@@ -53,7 +53,7 @@ class TreeTest extends TestCase
             . "    }" . PHP_EOL
             . "}" . PHP_EOL;
 
-    private $expectedTree13 = "{" . PHP_EOL
+    private $expectedStylish13 = "{" . PHP_EOL
             . "  - common: {" . PHP_EOL
             . "        setting1: Value 1" . PHP_EOL
             . "        setting2: 200" . PHP_EOL
@@ -80,7 +80,7 @@ class TreeTest extends TestCase
             . "    }" . PHP_EOL
             . "}" . PHP_EOL;
 
-    private $expectedTree31 = "{" . PHP_EOL
+    private $expectedStylish31 = "{" . PHP_EOL
             . "  + common: {" . PHP_EOL
             . "        setting1: Value 1" . PHP_EOL
             . "        setting2: 200" . PHP_EOL
@@ -107,41 +107,70 @@ class TreeTest extends TestCase
             . "    }" . PHP_EOL
             . "}" . PHP_EOL;
 
-    private $expectedBadFilesPaths = "Files are not found:" . PHP_EOL
-                . "tests/fixtures/badPath1.json" . PHP_EOL
-                . "tests/fixtures/badPath2.yml" . PHP_EOL
-                . "You should enter an existing files paths." . PHP_EOL;
+    private $jsonPath1 = 'tests/fixtures/tree1.json';
+    private $jsonPath2 = 'tests/fixtures/tree2.json';
+    private $jsonPath3 = 'tests/fixtures/tree3.json';
+    private $yamlPath1 = 'tests/fixtures/tree1.yml';
+    private $yamlPath2 = 'tests/fixtures/tree2.yml';
+    private $yamlPath3 = 'tests/fixtures/tree3.yml';
 
-    public function testJSONTree(): void
+    public function testStylishJSON(): void
     {
-        $f1Path = 'tests/fixtures/tree1.json';
-        $f2Path = 'tests/fixtures/tree2.json';
-        $f3Path = 'tests/fixtures/tree3.json';
-
-        $this->makeTreeTest($f1Path, $f2Path, $f3Path);
+        $this->makeStylishTest($this -> jsonPath1, $this -> jsonPath2, $this -> jsonPath3);
     }
 
-    public function testYAMLTree(): void
+    public function testStylishYAML(): void
     {
-        $f1Path = 'tests/fixtures/tree1.yml';
-        $f2Path = 'tests/fixtures/tree2.yml';
-        $f3Path = 'tests/fixtures/tree3.yml';
-
-        $this->makeTreeTest($f1Path, $f2Path, $f3Path);
+        $this->makeStylishTest($this -> yamlPath1, $this -> yamlPath2, $this -> yamlPath3);
     }
 
-    private function makeTreeTest($f1Path, $f2Path, $f3Path)
+    private function makeStylishTest($f1Path, $f2Path, $f3Path)
     {
-        $this->assertEquals($this->expectedTree12, genDiff($f1Path, $f2Path));
-        $this->assertEquals($this->expectedTree13, genDiff($f1Path, $f3Path));
-        $this->assertEquals($this->expectedTree31, genDiff($f3Path, $f1Path));
+        $this->assertEquals($this->expectedStylish12, genDiff($f1Path, $f2Path));
+        $this->assertEquals($this->expectedStylish13, genDiff($f1Path, $f3Path));
+        $this->assertEquals($this->expectedStylish31, genDiff($f3Path, $f1Path));
+    }
+
+    public function testPlain(): void
+    {
+        $expectedPlain12 = "Property 'common.follow' was added with value: false" . PHP_EOL
+        . "Property 'common.setting2' was removed" . PHP_EOL
+        . "Property 'common.setting3' was updated. From true to null" . PHP_EOL
+        . "Property 'common.setting4' was added with value: 'blah blah'" . PHP_EOL
+        . "Property 'common.setting5' was added with value: [complex value]" . PHP_EOL
+        . "Property 'common.setting6.doge.wow' was updated. From '' to 'so much'" . PHP_EOL
+        . "Property 'common.setting6.ops' was added with value: 'vops'" . PHP_EOL
+        . "Property 'group1.baz' was updated. From 'bas' to 'bars'" . PHP_EOL
+        . "Property 'group1.nest' was updated. From [complex value] to 'str'" . PHP_EOL
+        . "Property 'group2' was removed" . PHP_EOL
+        . "Property 'group3' was added with value: [complex value]" . PHP_EOL;
+
+        $this->assertEquals($expectedPlain12, genDiff($this -> yamlPath1, $this -> jsonPath2, 'plain'));
     }
 
     public function testBadFilePath(): void
     {
         $f1Path = 'tests/fixtures/badPath1.json';
         $f2Path = 'tests/fixtures/badPath2.yml';
-        $this -> expectExceptionMessage($this -> expectedBadFilesPaths);
+        $expectedBadFilesPaths = "Files are not found:" . PHP_EOL
+                . $f1Path . PHP_EOL
+                . $f2Path . PHP_EOL
+                . "You should enter an existing files paths.";
+        $this -> expectExceptionMessage($expectedBadFilesPaths);
         genDiff($f1Path, $f2Path);
+    }
+
+    public function testBadOutputFormat(): void
+    {
+        $expectedBadOutputFormat = "Bad output format. You may use 'stylish', 'plain' or 'json'.";
+        $this -> expectExceptionMessage($expectedBadOutputFormat);
+        genDiff($this -> jsonPath1, $this -> yamlPath2, 'badFormat');
+    }
+
+    public function testBadFileFormat(): void
+    {
+        $expectedBadOutputFormat = "Bad file format. You should pass JSON or YAML files only.";
+        $this -> expectExceptionMessage($expectedBadOutputFormat);
+        genDiff('tests/fixtures/badExtention.bef', $this -> yamlPath2);
     }
 }

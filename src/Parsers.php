@@ -16,6 +16,7 @@ function getParser($pathToFile)
             return parseYAML($pathToFile);
         };
     }
+    throw new \Exception("Bad file format. You should pass JSON or YAML files only.");
 }
 
 function parseJSON($pathToFile)
