@@ -4,5 +4,5 @@ namespace Differ\Formatters\JSON;
 
 function formatJSON($diff)
 {
-    return json_encode($diff) . PHP_EOL;
+    return json_encode($diff);
 }
