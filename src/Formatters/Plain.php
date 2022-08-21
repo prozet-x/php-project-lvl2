@@ -37,15 +37,18 @@ function formatPlain($diff, $upLevel = '')
             if ($elem['changes'] === 'n' and is_array($elem['value'])) {
                 return [...$acc, formatPlain($elem['value'], $upLevel . $elem['key'] . ".")];
             }
+            $res = null;
             switch ($elem['changes']) {
                 case 'a':
-                    return [...$acc, getAddString($upLevel, $elem['key'], $elem['value'])];
+                    $res = [...$acc, getAddString($upLevel, $elem['key'], $elem['value'])];
+                    break;
                 case 'r':
-                    return [...$acc, getDeleteString($upLevel, $elem['key'])];
+                    $res = [...$acc, getDeleteString($upLevel, $elem['key'])];
+                    break;
                 case 'u':
-                    return [...$acc, getUpdateString($upLevel, $elem['key'], $elem['value'], $elem['oldValue'])];
+                    $res = [...$acc, getUpdateString($upLevel, $elem['key'], $elem['value'], $elem['oldValue'])];
             }
-            return $acc;
+            return $res ?? $acc;
         },
         []
     );
