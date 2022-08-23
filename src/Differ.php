@@ -14,9 +14,10 @@ function getFormattedValue($value)
 function getNewDiffElem($key, $changes, $value, ...$args)
 {
     $res = ['key' => $key, 'changes' => $changes, 'value' => getFormattedValue($value)];
-    return count($args) === 1
-        ? [...$res, 'oldValue' => getFormattedValue($args[0])]
-        : $res;
+    if (count($args) === 1) {
+        $res['oldValue'] = getFormattedValue($args[0]);
+    }
+     return $res;
 }
 
 function makeDiff($before, $after)
