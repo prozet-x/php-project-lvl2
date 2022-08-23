@@ -37,7 +37,7 @@ function formatPlain(array $diff, string $upLevel = '')
             if ($elem['changes'] === 'n' and is_array($elem['value'])) {
                 return [...$acc, formatPlain($elem['value'], $upLevel . $elem['key'] . ".")];
             }
-            $res = null;
+            $res;
             switch ($elem['changes']) {
                 case 'a':
                     $res = [...$acc, getAddString($upLevel, $elem['key'], $elem['value'])];
