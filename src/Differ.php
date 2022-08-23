@@ -5,9 +5,8 @@ namespace Differ\Differ;
 use function Differ\Parsers\getParser;
 use function Differ\Formatters\formatDiff;
 
-function getFormattedValue($value)
+function getFormattedValue(mixed $value)
 {
-    //return is_array($value) ? makeDiff($value, $value) : trim(json_encode($value), '"');
     return is_array($value) ? makeDiff($value, $value) : $value;
 }
 
@@ -20,7 +19,7 @@ function getNewDiffElem($key, $changes, $value, ...$args)
      return $res;
 }
 
-function makeDiff($before, $after)
+function makeDiff(array $before, array $after)
 {
     $getNewDiffElemFunc = function ($key, $changes, $value, ...$args) {
         return getNewDiffElem($key, $changes, $value, ...$args);
@@ -50,13 +49,13 @@ function makeDiff($before, $after)
     );
 }
 
-function getFileDataAsArray($pathToFile)
+function getFileDataAsArray(string $pathToFile)
 {
     $parser = getParser($pathToFile);
     return $parser($pathToFile);
 }
 
-function checkfilesExisting(...$files)
+function checkfilesExisting(array ...$files)
 {
     $badPaths = array_reduce(
         $files,
@@ -73,7 +72,7 @@ function checkfilesExisting(...$files)
     }
 }
 
-function genDiff($pathToFile1, $pathToFile2, $outputFormat = 'stylish')
+function genDiff(string $pathToFile1, string $pathToFile2, string $outputFormat = 'stylish')
 {
     checkfilesExisting($pathToFile1, $pathToFile2);
     $f1data = getFileDataAsArray($pathToFile1);
