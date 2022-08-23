@@ -17,7 +17,11 @@ function getParser(string $pathToFile)
 
 function parseJSON(string $pathToFile)
 {
-    return json_decode(file_get_contents($pathToFile), true);
+    $fileContent = file_get_contents($pathToFile);
+    if ($fileContent === false) {
+        throw new Exception('File content is not in JSON format!');
+    }
+    return json_decode($fileContent, true);
 }
 
 function parseYAML(string $pathToFile)
