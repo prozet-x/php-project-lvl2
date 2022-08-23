@@ -55,7 +55,7 @@ function getFileDataAsArray(string $pathToFile)
     return $parser($pathToFile);
 }
 
-function checkfilesExisting(array ...$files)
+function checkfilesExisting(string ...$files)
 {
     $badPaths = array_reduce(
         $files,
