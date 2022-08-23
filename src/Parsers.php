@@ -21,10 +21,7 @@ function getParser($pathToFile)
 
 function parseJSON($pathToFile)
 {
-    $handler = fopen($pathToFile, 'r');
-    $res = json_decode(fread($handler, filesize($pathToFile)), true);
-    fclose($handler);
-    return $res;
+    return json_decode(file_get_contents($pathToFile), true);
 }
 
 function parseYAML($pathToFile)
