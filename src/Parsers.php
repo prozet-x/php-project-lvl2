@@ -19,7 +19,7 @@ function parseJSON(string $pathToFile)
 {
     $fileContent = file_get_contents($pathToFile);
     if ($fileContent === false) {
-        throw new Exception('File content is not in JSON format!');
+        throw new \Exception('File content is not in JSON format!');
     }
     return json_decode($fileContent, true);
 }
