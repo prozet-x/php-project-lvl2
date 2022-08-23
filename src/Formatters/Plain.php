@@ -2,6 +2,8 @@
 
 namespace Differ\Formatters\Plain;
 
+use function Functional\sort;
+
 function getformattedValue(mixed $value)
 {
     $valueAsStinrg = json_encode($value);
@@ -32,11 +34,12 @@ function getDeleteString(string $upLevel, string $currentLevel)
 function formatPlain(array $diff, string $upLevel = '')
 {
     if (count(array_filter($diff, fn ($elem) => $elem['changes'] !== 'n')) > 0) {
-        usort($diff, fn ($a, $b) => strcmp($a['key'], $b['key']));
+        $sortedDiff = \Functional\sort($diff, fn ($a, $b) => strcmp($a['key'], $b['key']));
+        //usort($diff, fn ($a, $b) => strcmp($a['key'], $b['key']));
     }
 
     $res = array_reduce(
-        $diff,
+        $sortedDiff ?? $diff,
         function ($acc, $elem) use ($upLevel) {
             if ($elem['changes'] === 'n' and is_array($elem['value'])) {
                 return [...$acc, formatPlain($elem['value'], $upLevel . $elem['key'] . ".")];

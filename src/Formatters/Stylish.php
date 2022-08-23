@@ -19,12 +19,12 @@ function getFormattedString(string $key, mixed $value, int $deep, string $change
 function formatStylish(array $diff, int $deep = 0)
 {
     if (count(array_filter($diff, fn ($elem) => $elem['changes'] !== 'n')) > 0) {
-        usort($diff, fn ($a, $b) => strcmp($a['key'], $b['key']));
+        $sortedDiff = \Functional\sort($diff, fn ($a, $b) => strcmp($a['key'], $b['key']));
     }
 
     $offset = str_repeat(TAB, $deep);
     $result = array_reduce(
-        $diff,
+        $sortedDiff ?? $diff,
         function ($acc, $elem) use ($deep, $offset) {
             switch ($elem['changes']) {
                 case 'r':
