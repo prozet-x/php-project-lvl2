@@ -6,7 +6,7 @@ use function Differ\Formatters\Stylish\formatStylish;
 use function Differ\Formatters\Plain\formatPlain;
 use function Differ\Formatters\JSON\formatJSON;
 
-function formatDiff($diff, $formatName)
+function formatDiff(array $diff, string $formatName)
 {
     if ($formatName === 'stylish') {
         return formatStylish($diff);
