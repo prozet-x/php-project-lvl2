@@ -6,7 +6,11 @@ const TAB = '    ';
 
 function getformattedValue(mixed $value)
 {
-    return trim(json_encode($value), '"');
+    $valueAsStinrg = json_encode($value);
+    if ($valueAsStinrg === false) {
+        throw new \Exception("Can not convert value " . $value . " to JSON!");
+    }
+    return trim($valueAsStinrg, '"');
 }
 
 function getFormattedString(string $key, mixed $value, int $deep, string $changesSymbol = ' ')
