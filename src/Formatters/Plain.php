@@ -2,30 +2,30 @@
 
 namespace Differ\Formatters\Plain;
 
-function getformattedValue($value)
+function getformattedValue(mixed $value)
 {
     return str_replace('"', "'", json_encode($value));
 }
 
-function getUpdateString($upLevel, $currentLevel, $value, $oldValue)
+function getUpdateString(string $upLevel, string $currentLevel, mixed $value, mixed $oldValue)
 {
     return "Property '" . $upLevel . $currentLevel . "' was updated."
         . " From " . (is_array($oldValue) ? "[complex value]" : (getformattedValue($oldValue)))
         . " to " . (is_array($value) ? "[complex value]" : (getformattedValue($value)));
 }
 
-function getAddString($upLevel, $currentLevel, $value)
+function getAddString(string $upLevel, string $currentLevel, mixed $value)
 {
     return "Property '" . $upLevel . $currentLevel . "' was added with value: "
         . (is_array($value) ? "[complex value]" : getformattedValue($value));
 }
 
-function getDeleteString($upLevel, $currentLevel)
+function getDeleteString(string $upLevel, string $currentLevel)
 {
     return "Property '" . $upLevel . $currentLevel . "' was removed";
 }
 
-function formatPlain($diff, $upLevel = '')
+function formatPlain(array $diff, string $upLevel = '')
 {
     if (count(array_filter($diff, fn ($elem) => $elem['changes'] !== 'n')) > 0) {
         usort($diff, fn ($a, $b) => strcmp($a['key'], $b['key']));
