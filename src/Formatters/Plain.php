@@ -4,7 +4,11 @@ namespace Differ\Formatters\Plain;
 
 function getformattedValue(mixed $value)
 {
-    return str_replace('"', "'", json_encode($value));
+    $valueAsStinrg = json_encode($value);
+    if ($valueAsStinrg === false) {
+        throw new \Exception("Can not convert value " . $value . " to JSON!");
+    }
+    return str_replace('"', "'", $valueAsStinrg);
 }
 
 function getUpdateString(string $upLevel, string $currentLevel, mixed $value, mixed $oldValue)
